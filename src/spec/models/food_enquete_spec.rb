@@ -62,6 +62,37 @@ RSpec.describe FoodEnquete, type: :model do
     end
   end
 
+  describe 'アンケート回答時の条件' do
+    context '年齢確認' do
+      it '未成年はビール飲み放題を選択できないこと' do
+        enquete_sato = FoodEnquete.new(
+          name: '佐藤 仁美',
+          mail: 'hitomi.sato@example.com',
+          age: 19,
+          food_id: 2,
+          score: 3,
+          request: 'おいしかったです。',
+          present_id: 1   # ビール飲み放題
+        )
+        expect(enquete_sato).not_to be_valid
+        expect(enquete_sato.errors[:present_id]).to include(I18n.t('activerecord.errors.models.food_enquete.attributes.present_id.cannot_present_to_minor'))
+      end
+
+      it '成人はビール飲み放題を選択できないこと' do
+        enquete_sato = FoodEnquete.new(
+          name: '佐藤 仁美',
+          mail: 'hitomi.sato@example.com',
+          age: 20,
+          food_id: 2,
+          score: 3,
+          request: 'おいしかったです。',
+          present_id: 1   # ビール飲み放題
+        )
+        expect(enquete_sato).to be_valid
+      end
+    end
+  end
+
   describe '#adult?' do
     it '20歳未満は成人ではないこと' do
       foodEnquete = FoodEnquete.new
