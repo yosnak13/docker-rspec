@@ -61,4 +61,17 @@ RSpec.describe FoodEnquete, type: :model do
       end
     end
   end
+
+  describe '#adult?' do
+    it '20歳未満は成人ではないこと' do
+      foodEnquete = FoodEnquete.new
+      # privateメソッドはインスタンスから直接呼び出せないため、sendメソッドに検証したいプライベートメソッドadult?を指定しなければならない
+      expect(foodEnquete.send(:adult?, 19)).to be_falsey
+    end
+
+    it '20歳以上は成人であること' do
+      foodEnquete = FoodEnquete.new
+      expect(foodEnquete.send(:adult?, 20)).to be_truthy
+    end
+  end
 end
