@@ -18,4 +18,14 @@ FactoryBot.define do
     request { '' }
     present_id { 0 }
   end
+
+  factory :food_enquete_sato, class: 'FoodEnquete' do
+    name { '佐藤 仁美' }
+    mail { 'hitomi.sato@example.com' }
+    age { 19 }
+    food_id { 2 }
+    score { 3 }
+    request { 'おいしかったです。' }
+    present_id { 1 }
+  end
 end
