@@ -90,7 +90,35 @@ RSpec.describe FoodEnquete, type: :model do
         # メールアドレスが既に存在するメッセージが含まれることを検証
         expect(re_enquete_tanaka.errors[:mail]).to include(I18n.t('errors.messages.taken'))
         expect(re_enquete_tanaka.save).to be_falsey
+        # アンケートの総数が1であることを確認
         expect(FoodEnquete.all.size).to eq 1
+      end
+
+      it '異なるメールアドレスでは回答できるテスト' do
+        enquete_tanaka = FoodEnquete.new(
+          name: '田中 太郎',
+          mail: 'taro.tanaka@example.com',
+          age: 25,
+          food_id: 2,
+          score: 3,
+          request: 'おいしかったです。',
+          present_id: 1
+        )
+        enquete_tanaka.save
+
+        enquete_yamada = FoodEnquete.new(
+          name: '山田 次郎',
+          mail: 'jiro.yamada@example.com',
+          age: 22,
+          food_id: 1,
+          score: 2,
+          request: '',
+          present_id: 0
+        )
+
+        expect(enquete_yamada).to be_valid
+        enquete_yamada.save
+        expect(FoodEnquete.all.size).to eq 2
       end
     end
 
