@@ -7,7 +7,7 @@ RSpec.describe FoodEnquete, type: :model do
                                満足度:良い score: 3,
                                希望するプレゼント:ビール飲み放題 present_id: 1' do
 
-        enquete = FactoryBot.build(:food_enquete)
+        enquete = FactoryBot.build(:food_enquete_tanaka)
         #バリデーションが通ることを検証
         expect(enquete).to be_valid
         #テストデータの保存
@@ -69,9 +69,9 @@ RSpec.describe FoodEnquete, type: :model do
     context 'メールアドレスを確認すること' do
       it '同じメールアドレスで再び回答できないこと' do
         # 1つ目のテストデータ
-        FactoryBot.create(:food_enquete)
+        FactoryBot.create(:food_enquete_tanaka)
         #2つ目のテストデータ（Botの内容に変更を加える書き方にする）
-        re_enquete_tanaka = FactoryBot.build(:food_enquete, food_id: 0, score: 1, present_id: 0, request: "スープがぬるかった")
+        re_enquete_tanaka = FactoryBot.build(:food_enquete_tanaka, food_id: 0, score: 1, present_id: 0, request: "スープがぬるかった")
         expect(re_enquete_tanaka).not_to be_valid
         # メールアドレスが既に存在するメッセージが含まれることを検証
         expect(re_enquete_tanaka.errors[:mail]).to include(I18n.t('errors.messages.taken'))
@@ -81,7 +81,7 @@ RSpec.describe FoodEnquete, type: :model do
       end
 
       it '異なるメールアドレスでは回答できるテスト' do
-        FactoryBot.create(:food_enquete)
+        FactoryBot.create(:food_enquete_tanaka)
         enquete_yamada = FactoryBot.build(:food_enquete_yamada)
         expect(enquete_yamada).to be_valid
         enquete_yamada.save
