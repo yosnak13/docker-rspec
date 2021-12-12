@@ -82,15 +82,7 @@ RSpec.describe FoodEnquete, type: :model do
 
       it '異なるメールアドレスでは回答できるテスト' do
         FactoryBot.create(:food_enquete)
-        enquete_yamada = FoodEnquete.new(
-          name: '山田 次郎',
-          mail: 'jiro.yamada@example.com',
-          age: 22,
-          food_id: 1,
-          score: 2,
-          request: '',
-          present_id: 0
-        )
+        enquete_yamada = FactoryBot.build(:food_enquete_yamada)
         expect(enquete_yamada).to be_valid
         enquete_yamada.save
         expect(FoodEnquete.all.size).to eq 2
