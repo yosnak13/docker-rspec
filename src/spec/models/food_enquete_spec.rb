@@ -26,28 +26,26 @@ RSpec.describe FoodEnquete, type: :model do
   end
 
   describe '入力項目の有無' do
+    # 共通で使用するインスタンスを作成
+    let(:new_enquete){ FoodEnquete.new }
     context '入力必須であること' do
       it 'お名前が必須であること' do
-        new_enquete = FoodEnquete.new
         expect(new_enquete).not_to be_valid
         expect(new_enquete.errors[:name]).to include(I18n.t('errors.messages.blank'))
       end
 
       it 'メールアドレスが必須であること' do
-        new_enquete = FoodEnquete.new
         expect(new_enquete).not_to be_valid
         expect(new_enquete.errors[:mail]).to include(I18n.t('errors.messages.blank'))
       end
 
       it '登録できないこと' do
-        new_enquete = FoodEnquete.new
         expect(new_enquete.save).to be_falsey
       end
     end
 
     context '任意入力であること' do
       it 'ご意見・ご要望が任意であること' do
-        new_enquete = FoodEnquete.new
         expect(new_enquete).not_to be_valid
         expect(new_enquete.errors[:request]).not_to include(I18n.t('errors.messages.blank'))
       end
@@ -67,21 +65,20 @@ RSpec.describe FoodEnquete, type: :model do
 
   describe 'アンケート回答時の条件' do
     context 'メールアドレスを確認すること' do
-      it '同じメールアドレスで再び回答できないこと' do
-        # 1つ目のテストデータ
+      before do
         FactoryBot.create(:food_enquete_tanaka)
+      end
+      it '同じメールアドレスで再び回答できないこと' do
         #2つ目のテストデータ（Botの内容に変更を加える書き方にする）
         re_enquete_tanaka = FactoryBot.build(:food_enquete_tanaka, food_id: 0, score: 1, present_id: 0, request: "スープがぬるかった")
         expect(re_enquete_tanaka).not_to be_valid
         # メールアドレスが既に存在するメッセージが含まれることを検証
         expect(re_enquete_tanaka.errors[:mail]).to include(I18n.t('errors.messages.taken'))
         expect(re_enquete_tanaka.save).to be_falsey
-        # アンケートの総数が1であることを確認
         expect(FoodEnquete.all.size).to eq 1
       end
 
       it '異なるメールアドレスでは回答できるテスト' do
-        FactoryBot.create(:food_enquete_tanaka)
         enquete_yamada = FactoryBot.build(:food_enquete_yamada)
         expect(enquete_yamada).to be_valid
         enquete_yamada.save
