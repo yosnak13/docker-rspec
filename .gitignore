@@ -27,3 +27,5 @@ src/.byebug_history
 src/config/master.key
 
 src/db/mysql_data
+
+src/.env
