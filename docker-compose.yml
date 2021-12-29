@@ -8,17 +8,6 @@ services:
       MYSQL_ROOT_PASSWORD: password
       TZ: Asia/Tokyo
 
-  test-db: #Rspecでのテスト実行用のコンテナ
-    image: mysql:5.7
-    ports:
-      - '4306:3306'    #開発用とはポート番号を別にする
-    environment:    #接続情報は開発のものと一応分けます
-      MYSQL_DATABASE: <%= ENV.fetch('TEST_DATABASE') %>
-      MYSQL_ROOT_PASSWORD: <%= ENV.fetch('TEST_ROOTPASS') %>
-      MYSQL_USER: <%= ENV.fetch('TEST_USERNAME') %>
-      MYSQL_PASSWORD: <%= ENV.fetch('TEST_USERPASS') %>
-      TZ: Asia/Tokyo
-
   web:
     build: .
     command: bundle exec rails s -p 3000 -b '0.0.0.0'
