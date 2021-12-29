@@ -11,7 +11,7 @@ RSpec.describe "FoodEnquete", type: :system do
         fill_in '年齢', with: enquete.age
         select enquete.food_name, from: 'お召し上がりになった料理'
         choose "food_enquete_score_#{enquete.score}"
-        fill_in ' ご意見・ご要望', with: enquete.request
+        fill_in 'food_enquete[request]', with: enquete.request
         select enquete.present_name, from: 'ご希望のプレゼント'
 
         sleep2 #2秒止める動作だが本来は不要
