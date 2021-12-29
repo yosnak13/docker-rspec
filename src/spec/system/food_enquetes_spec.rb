@@ -27,4 +27,18 @@ RSpec.describe "FoodEnquete", type: :system do
       end
     end
   end
+
+  describe '異常' do
+    context "必須項目が未入力" do
+      it "エラーメッセージが表示され、回答できないこと" do
+        visit "/food_enquetes/new"
+        click_button '登録する'
+        expect(page).not_to have_content 'ご回答ありがとうございました'
+        expect(page).to have_content 'お名前を入力してください'
+        expect(page).to have_content 'メールアドレスを入力してください'
+        expect(page).to have_content '年齢を入力してください'
+        expect(page).to have_content '満足度を入力してください'
+      end
+    end
+  end
 end
